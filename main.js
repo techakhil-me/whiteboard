@@ -80,7 +80,7 @@ document.querySelectorAll(".ri-pencil-fill").forEach((pencil)=>{
     inactive_all()
     active_tool = "pencil"
     // draw_color = pencil.style.color
-    console.log(document.querySelector(".red").style.color)
+    console.log(pencil.style.color)
     pencil.classList.add('active')
   })
   
