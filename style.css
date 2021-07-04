@@ -11,6 +11,23 @@ body {
   height: 100vh;
   overflow: hidden;
   font-family: Chakra Petch;
+  transition : filter 500ms linear;
+  -webkit-transition : -webkit-filter 500ms linear;
+}
+.stroke{
+  position: absolute;
+  pointer-events: none;
+  width:20px;
+  height:20px;
+  transform: translate(-50%,-50%);
+  background: black;
+  border-radius: 50%;
+  visibility: hidden;
+  transition: visibility 0.2s ease-in-out;
+}
+.dark {
+  filter:invert(1);
+  -webkit-filter: invert(1);
 }
 
 .whiteboard {

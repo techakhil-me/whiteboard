@@ -13,13 +13,14 @@
   </head>
   <body>
     <canvas class="whiteboard"></canvas>
+    <div class="stroke"></div>
     <div class="toolbox" id="mainBox">
       <i class="ri-pencil-line icon" id="pencilOpen"><div class="tooltip">pencil</div></i>
       <i class="ri-text icon"><div class="tooltip">text</div></i>
       <i class="ri-image-line icon"><div class="tooltip">pictures</div></i>
       <i class="ri-separator icon"><div class="tooltip">line</div></i>
-      <i class="ri-moon-line icon"><div class="tooltip">theme</div></i>
-      <i class="ri-delete-bin-line icon"><div class="tooltip">clear</div></i>
+      <i class="ri-moon-line icon" id="theme"><div class="tooltip">theme</div></i>
+      <i class="ri-delete-bin-line icon" id="clear"><div class="tooltip">clear</div></i>
     </div>
     <div class="toolbox slide-out" id="pencilBox">
         <i class="ri-arrow-down-s-line icon" id="pencilClose"><div class="tooltip">close</div></i>
@@ -28,8 +29,7 @@
       <i class="ri-pencil-fill blue icon" style="color: #4B8BF4;"><div class="tooltip">blue</div></i>
       <i class="ri-pencil-fill green icon" style="color: #19A15F;"><div class="tooltip">green</div></i>
       <i class="ri-pencil-fill yellow icon" style="color: #FFCE43;"><div class="tooltip">yellow</div></i>
-      <i class="ri-eraser-fill icon"><div class="tooltip">erase</div></i>
-      <i class="ri-delete-bin-line icon"><div class="tooltip">clear</div></i>
+      <i class="ri-eraser-fill icon" id="eraser"><div class="tooltip">erase</div></i>
     </div>
     <script src="main.js"></script>
   </body>
