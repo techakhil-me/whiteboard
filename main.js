@@ -79,8 +79,7 @@ document.querySelectorAll(".ri-pencil-fill").forEach((pencil)=>{
   pencil.addEventListener('click',()=>{
     inactive_all()
     active_tool = "pencil"
-    // draw_color = pencil.style.color
-    console.log(pencil.style.color)
+    draw_color = pencil.style.color
     pencil.classList.add('active')
   })
   
