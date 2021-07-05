@@ -12,17 +12,43 @@
     />
   </head>
   <body>
+<div class="info info-in">
+  <div class="content">
+      <i class="ri-close-line close"></i>
+<h2>Team Undefined</h2>
+<h4>present</h4>
+<h1>WHITEBOARD</h1>
+<div class="list container">
+<h3>Features</h3>
+
+<li>Draw using pencil, eraser</li>
+<li>change color using color tool</li>
+<li>Change stroke width using scroll</li>
+<li>Draw lines</li>
+<li>Add text and move</li>
+<li>Add a Todo List and move</li>
+<li>Undo, Redo, Clear</li>
+last but not the least
+<li>Switch Theme</li>
+
+</div>
+</div>
+
+</div>
     <canvas class="whiteboard"></canvas>
+    
+<div class="infoIcon"><i class="ri-information-fill"></i></div>
+
     <div class="stroke"></div>
     <div class="toolbox" id="mainBox">
       <i class="ri-pencil-line icon" id="pencilOpen"
-        ><div class="tooltip">pencil</div></i
+        ><div class="tooltip">draw</div></i
       >
       <i class="ri-text icon" id="addText"><div class="tooltip">text</div></i>
       <i class="ri-todo-line icon" id="addTodo"
         ><div class="tooltip">todo</div></i
       >
-      <i class="ri-separator icon" id="line"><div class="tooltip">line</div></i>
+      
       <i class="ri-moon-line icon" id="theme"
         ><div class="tooltip">theme</div></i
       >
@@ -59,6 +85,7 @@
       <i class="ri-pencil-fill yellow icon" style="color: #ffce43;"
         ><div class="tooltip">yellow</div></i
       >
+      <i class="ri-separator icon" id="line"><div class="tooltip">line</div></i>
       <i class="ri-eraser-fill icon" id="eraser"
         ><div class="tooltip">erase</div></i
       >

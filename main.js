@@ -108,10 +108,9 @@ const redo = document.querySelector("#redo");
 const line = document.querySelector("#line");
 
 redo.addEventListener("click", () => {
-  
-  if (draw_value < restore.length - 1){
-  draw_value++;
-  context.putImageData(restore[draw_value], 0, 0);
+  if (draw_value < restore.length - 1) {
+    draw_value++;
+    context.putImageData(restore[draw_value], 0, 0);
   }
 });
 
@@ -119,7 +118,6 @@ pencilOpen.addEventListener("click", () => {
   inactive_all();
   mainBox.classList.toggle("slide-out");
   pencilBox.classList.toggle("slide-out");
-  draw_color = "black";
   colorPicker.classList.add("active");
   active_tool = "pencil";
 });
@@ -168,12 +166,11 @@ clear.addEventListener("click", () => {
 });
 
 undo.addEventListener("click", () => {
-    if(draw_value> 0){
+  if (draw_value > 0) {
     // restore.pop();
     draw_value -= 1;
     context.putImageData(restore[draw_value], 0, 0);
-    
-    }
+  }
 });
 
 line.addEventListener("click", () => {
@@ -244,7 +241,6 @@ addTodo.addEventListener("click", () => {
   newTask.setAttribute("type", "text");
   newTask.setAttribute("placeholder", "Enter Task");
 
-
   todoContainer.append(todoTitle);
   todoContainer.append(listedTask);
   todoContainer.append(newTask);
@@ -281,7 +277,6 @@ addTodo.addEventListener("click", () => {
   // textbox.focus();
 });
 
-dragElement(document.querySelector(".rectangle"));
 
 function dragElement(elmnt) {
   var pos1 = 0,
@@ -322,3 +317,12 @@ window.onresize = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
+
+document.querySelector(".infoIcon").addEventListener("click", () => {
+  document.querySelector(".info").classList.toggle("info-in");
+});
+
+
+document.querySelector(".close").addEventListener("click", () => {
+  document.querySelector(".info").classList.toggle("info-in");
+});
