@@ -1,5 +1,8 @@
 const canvas = document.querySelector("canvas");
-const stroke = document.querySelector(".stroke")
+const stroke = document.querySelector(".stroke");
+
+// canvas.width = 1000;
+// canvas.height = 1000;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -31,16 +34,17 @@ function start_draw(e) {
   is_drawing = true;
   if (active_tool === "pencil") {
     context.beginPath();
-    context.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    context.moveTo(e.clientX, e.clientY);
   }
   // e.preventDefault();
 }
 
 function draw(e) {
-stroke.style.top = `${e.clientY}px`
-stroke.style.left = `${e.clientX}px`
+  stroke.style.top = `${e.clientY}px`;
+  stroke.style.left = `${e.clientX}px`;
   if (is_drawing && active_tool === "pencil") {
-    context.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    // context.bezierCurveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop,e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop,e.clientX,e.clientY);
+    context.lineTo(e.clientX, e.clientY);
     context.strokeStyle = draw_color;
     context.lineWidth = draw_width;
     context.lineCap = "round";
@@ -89,48 +93,159 @@ document.querySelectorAll(".ri-pencil-fill").forEach((pencil) => {
 });
 
 pencilClose.addEventListener("click", () => {
+  inactive_all();
   mainBox.classList.toggle("slide-out");
   pencilBox.classList.toggle("slide-out");
   active_tool = null;
 });
 
+eraser.addEventListener("click", () => {
+  active_tool = "pencil";
+  inactive_all();
+  draw_color = "white";
+  eraser.classList.toggle("active");
+});
 
-eraser.addEventListener('click',()=>{
-  active_tool = "pencil"
-  inactive_all()
-  draw_color = "white"
-  eraser.classList.toggle("active")
-})
-
-clear.addEventListener('click',()=>{
+clear.addEventListener("click", () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
   context.fillRect(0, 0, canvas.width, canvas.height);
-})
+  document.querySelectorAll(".textbox").forEach((textbox) => {
+    textbox.remove();
+  });
+});
 
-
-
-document.body.addEventListener('wheel', function(e) {
-  
-  if (e.deltaY<0 && draw_width<40){
-    draw_width++
-  } else if(draw_width>0){
-    draw_width--
+document.body.addEventListener("wheel", function (e) {
+  if (e.deltaY < 0 && draw_width < 40) {
+    draw_width++;
+  } else if (draw_width > 0) {
+    draw_width--;
   }
-  stroke.style.visibility = "visible"
-  stroke.style.width=`${draw_width}px`
-  stroke.style.height=`${draw_width}px`
-  setTimeout(()=>{stroke.style.visibility = "hidden"}, 1000);
-})
+  stroke.style.visibility = "visible";
+  stroke.style.width = `${draw_width}px`;
+  stroke.style.height = `${draw_width}px`;
+  setTimeout(() => {
+    stroke.style.visibility = "hidden";
+  }, 1000);
+});
 
+const theme = document.querySelector("#theme");
 
-const theme = document.querySelector("#theme")
+theme.addEventListener("click", () => {
+  theme.classList.toggle("ri-sun-line");
+  theme.classList.toggle("ri-moon-line");
+  document.body.classList.toggle("dark");
+});
 
-theme.addEventListener('click',()=>{
-  theme.classList.toggle("ri-sun-line")
-  theme.classList.toggle("ri-moon-line")
-  document.body.classList.toggle("dark")
-})
+const addText = document.querySelector("#addText");
+
+addText.addEventListener("click", () => {
+  let textbox = document.createElement("span");
+  textbox.setAttribute("role", "textbox");
+  textbox.setAttribute("contenteditable", "true");
+  textbox.className = "textbox";
+  textbox.innerHTML = "type";
+  document.body.appendChild(textbox);
+  dragElement(textbox);
+  textbox.focus();
+});
+
+const addTodo = document.querySelector("#addTodo");
+
+addTodo.addEventListener("click", () => {
+  let todoContainer = document.createElement("div");
+  todoContainer.className = "todo";
+  let todoTitle = document.createElement("div");
+  todoTitle.className = "todo-title";
+  todoTitle.innerHTML = "Enter Task"
+  let listedTask = document.createElement("div");
+  listedTask.className = "listedtask";
+
+  let newTask = document.createElement("input");
+  newTask.className = "newtask";
+  newTask.setAttribute("type", "text");
+  newTask.setAttribute("placeholder", "Enter Task");
+
+  // push to container
+  todoContainer.append(todoTitle);
+  todoContainer.append(listedTask);
+  todoContainer.append(newTask);
+
+  newTask.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      addtask();
+    }
+  });
+
+  function addtask() {
+    let listitem = document.createElement("li");
+
+    listitem.className = "list-group-item";
+    listitem.innerHTML = newTask.value;
+
+    listitem.addEventListener("click", () => {
+      listitem.classList.toggle("done");
+    });
+    let deleteitem = document.createElement("i");
+    deleteitem.className = "ri-delete-bin-2-line todo-delete";
+
+    deleteitem.addEventListener("click", () => {
+      listitem.remove();
+    });
+    listitem.append(deleteitem);
+    listedTask.append(listitem);
+
+    newTask.value = "";
+  }
+
+  document.body.appendChild(todoContainer);
+  dragElement(todoContainer);
+  // textbox.focus();
+});
+
+function dragElement(elmnt) {
+  var pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    // e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    // e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+    elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
 
 window.onresize = () => {
   canvas.width = window.innerWidth;
