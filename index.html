@@ -21,10 +21,11 @@
       <i class="ri-separator icon"><div class="tooltip">line</div></i>
       <i class="ri-moon-line icon" id="theme"><div class="tooltip">theme</div></i>
       <i class="ri-delete-bin-line icon" id="clear"><div class="tooltip">clear</div></i>
+      <i class="ri-delete-bin-line icon" id="undo"><div class="tooltip">undo</div></i>
     </div>
     <div class="toolbox slide-out" id="pencilBox">
         <i class="ri-arrow-down-s-line icon" id="pencilClose"><div class="tooltip">close</div></i>
-      <i class="ri-checkbox-blank-circle-fill icon color-picker"><div class="tooltip">color</div></i>
+        <input oninput="draw_color =  this.value" type="color" class="color-picker"><div class="tooltip">color</div>  
       <i class="ri-pencil-fill red icon" style="color: #DC5044;"><div class="tooltip">red</div></i>
       <i class="ri-pencil-fill blue icon" style="color: #4B8BF4;"><div class="tooltip">blue</div></i>
       <i class="ri-pencil-fill green icon" style="color: #19A15F;"><div class="tooltip">green</div></i>
