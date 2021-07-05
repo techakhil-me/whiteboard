@@ -17,6 +17,13 @@ let is_drawing = false;
 
 let active_tool = null;
 
+let restore = [];
+restore.push(context.getImageData(0, 0, canvas.width, canvas.height));
+let draw_value = 0;
+
+// line
+let x1, y1, x2, y2;
+
 // is_drawing = true on click begin path
 canvas.addEventListener("touchstart", start_draw);
 canvas.addEventListener("mousedown", start_draw);
@@ -36,6 +43,10 @@ function start_draw(e) {
     context.beginPath();
     context.moveTo(e.clientX, e.clientY);
   }
+
+  if (active_tool === "line") {
+    GetStartPoints();
+  }
   // e.preventDefault();
 }
 
@@ -53,12 +64,31 @@ function draw(e) {
 }
 
 function stop_draw(e) {
-  if (is_drawing) {
+  if (is_drawing && active_tool === "pencil") {
     context.stroke();
     context.closePath();
     is_drawing = false;
   }
+  if (active_tool === "line" && x1 !== null) {
+    GetEndPoints();
+
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.strokeStyle = draw_color;
+    context.lineWidth = draw_width;
+    context.lineCap = "round";
+    context.stroke();
+    context.closePath();
+    is_drawing = false;
+    x1 = null;
+  }
   // e.preventDefault();
+
+  if (event.type === "mouseup") {
+    restore.push(context.getImageData(0, 0, canvas.width, canvas.height));
+    draw_value += 1;
+  }
 }
 
 function inactive_all() {
@@ -71,21 +101,34 @@ const mainBox = document.querySelector("#mainBox");
 const pencilOpen = document.querySelector("#pencilOpen");
 const pencilClose = document.querySelector("#pencilClose");
 const pencilBox = document.querySelector("#pencilBox");
+const colorPicker = document.querySelector("#colorPicker");
 const eraser = document.querySelector("#eraser");
 const clear = document.querySelector("#clear");
+const undo = document.querySelector("#undo");
+const redo = document.querySelector("#redo");
+const line = document.querySelector("#line");
+
+redo.addEventListener("click", () => {
+  
+  if (draw_value < restore.length - 1){
+  draw_value++;
+  context.putImageData(restore[draw_value], 0, 0);
+  }
+});
 
 pencilOpen.addEventListener("click", () => {
   inactive_all();
   mainBox.classList.toggle("slide-out");
   pencilBox.classList.toggle("slide-out");
   draw_color = "black";
-  document.querySelector(".color-picker").classList.add("active");
+  colorPicker.classList.add("active");
   active_tool = "pencil";
 });
 
 document.querySelectorAll(".ri-pencil-fill").forEach((pencil) => {
   pencil.addEventListener("click", () => {
     inactive_all();
+
     active_tool = "pencil";
     draw_color = pencil.style.color;
     pencil.classList.add("active");
@@ -98,6 +141,14 @@ pencilClose.addEventListener("click", () => {
   pencilBox.classList.toggle("slide-out");
   active_tool = null;
 });
+
+function changeColor(e) {
+  inactive_all();
+  active_tool = "pencil";
+  colorPicker.classList.add("active");
+  draw_color = e.value;
+  colorPicker.style.color = e.value;
+}
 
 eraser.addEventListener("click", () => {
   active_tool = "pencil";
@@ -113,7 +164,36 @@ clear.addEventListener("click", () => {
   document.querySelectorAll(".textbox").forEach((textbox) => {
     textbox.remove();
   });
+  restore = [];
+  draw_value = -1;
 });
+
+undo.addEventListener("click", () => {
+    if(draw_value> 0){
+    // restore.pop();
+    draw_value -= 1;
+    context.putImageData(restore[draw_value], 0, 0);
+    
+    }
+});
+
+line.addEventListener("click", () => {
+  active_tool = "line";
+  inactive_all();
+  line.classList.toggle("active");
+});
+
+function GetStartPoints() {
+  // This function sets start points
+  x1 = event.clientX;
+  y1 = event.clientY;
+}
+
+function GetEndPoints() {
+  // This function sets end points
+  x2 = event.clientX;
+  y2 = event.clientY;
+}
 
 document.body.addEventListener("wheel", function (e) {
   if (e.deltaY < 0 && draw_width < 40) {
@@ -157,7 +237,8 @@ addTodo.addEventListener("click", () => {
   todoContainer.className = "todo";
   let todoTitle = document.createElement("div");
   todoTitle.className = "todo-title";
-  todoTitle.innerHTML = "Enter Task"
+  todoTitle.setAttribute("contenteditable", "true");
+  todoTitle.innerHTML = "Enter Task";
   let listedTask = document.createElement("div");
   listedTask.className = "listedtask";
 
@@ -203,18 +284,15 @@ addTodo.addEventListener("click", () => {
   // textbox.focus();
 });
 
+dragElement(document.querySelector(".rectangle"));
+
 function dragElement(elmnt) {
   var pos1 = 0,
     pos2 = 0,
     pos3 = 0,
     pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
+
+  elmnt.onmousedown = dragMouseDown;
 
   function dragMouseDown(e) {
     e = e || window.event;
