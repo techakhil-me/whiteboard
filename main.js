@@ -14,6 +14,10 @@ let is_drawing = false;
 
 let active_tool = null;
 
+let restore = [];
+let draw_value = -1;
+
+
 // is_drawing = true on click begin path
 canvas.addEventListener("touchstart", start_draw);
 canvas.addEventListener("mousedown", start_draw);
@@ -55,6 +59,11 @@ function stop_draw(e) {
     is_drawing = false;
   }
   // e.preventDefault();
+  if(event.type != 'mouseup') {
+    restore.push(context.getImageData(0 ,0 , canvas.width, canvas.height));
+    draw_value += 1;
+   }
+  
 }
 
 function inactive_all() {
@@ -69,6 +78,7 @@ const pencilClose = document.querySelector("#pencilClose");
 const pencilBox = document.querySelector("#pencilBox");
 const eraser = document.querySelector("#eraser");
 const clear = document.querySelector("#clear");
+const undo = document.querySelector("#undo");
 
 pencilOpen.addEventListener("click", () => {
   inactive_all();
@@ -106,9 +116,20 @@ clear.addEventListener('click',()=>{
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
   context.fillRect(0, 0, canvas.width, canvas.height);
+
+  restore = [];
+  draw_value =- 1;
 })
 
-
+undo.addEventListener('click',()=>{
+  if(draw_value <=0) {
+     clear
+  }else {
+    draw_value -= 1;
+    restore.pop();
+    context.putImageData(restore[draw_value], 0, 0)
+  }
+})
 
 document.body.addEventListener('wheel', function(e) {
   

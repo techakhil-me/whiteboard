@@ -98,3 +98,10 @@ body {
 .color-picker {
   color: black;
 }
+
+input{
+  border: none;
+  border-radius: 50px;
+  height: 35px;
+  width: 35px;
+}
