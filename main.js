@@ -18,8 +18,20 @@ let is_drawing = false;
 let active_tool = null;
 
 let restore = [];
-restore.push(context.getImageData(0, 0, canvas.width, canvas.height));
 let draw_value = 0;
+function load(){
+  let img = new Image;
+  img.src = JSON.parse(localStorage.getItem('restore'));
+  if (img.src){
+    img.onload = function(){
+      context.drawImage(img,0,0); // Or at whatever offset you like
+    }; 
+  }
+}
+load()
+restore.push(context.getImageData(0, 0, canvas.width, canvas.height));
+// load()
+
 
 // line
 let x1, y1, x2, y2;
@@ -86,7 +98,10 @@ function stop_draw(e) {
 
   if (event.type === "mouseup") {
     restore.push(context.getImageData(0, 0, canvas.width, canvas.height));
+    let imgAsDataURL = canvas.toDataURL("image/png");
+    localStorage.setItem('restore', JSON.stringify(imgAsDataURL));
     draw_value += 1;
+    
   }
 }
 
@@ -111,6 +126,8 @@ redo.addEventListener("click", () => {
   if (draw_value < restore.length - 1) {
     draw_value++;
     context.putImageData(restore[draw_value], 0, 0);
+    let imgAsDataURL = canvas.toDataURL("image/png");
+  localStorage.setItem('restore', JSON.stringify(imgAsDataURL));
   }
 });
 
@@ -163,6 +180,8 @@ clear.addEventListener("click", () => {
   });
   restore = [];
   draw_value = -1;
+  let imgAsDataURL = canvas.toDataURL("image/png");
+  localStorage.setItem('restore', JSON.stringify(imgAsDataURL));
 });
 
 undo.addEventListener("click", () => {
@@ -170,6 +189,8 @@ undo.addEventListener("click", () => {
     // restore.pop();
     draw_value -= 1;
     context.putImageData(restore[draw_value], 0, 0);
+    let imgAsDataURL = canvas.toDataURL("image/png");
+  localStorage.setItem('restore', JSON.stringify(imgAsDataURL));
   }
 });
 
@@ -325,4 +346,13 @@ document.querySelector(".infoIcon").addEventListener("click", () => {
 
 document.querySelector(".close").addEventListener("click", () => {
   document.querySelector(".info").classList.toggle("info-in");
+});
+
+document.querySelector("#save").addEventListener("click", () => {
+  var link = document.createElement('a');
+link.download = "whiteboard.png";
+link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+link.click();
+link.remove()
+
 });
