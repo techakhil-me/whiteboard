@@ -54,7 +54,6 @@ function draw(e) {
   stroke.style.top = `${e.clientY}px`;
   stroke.style.left = `${e.clientX}px`;
   if (is_drawing && active_tool === "pencil") {
-    // context.bezierCurveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop,e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop,e.clientX,e.clientY);
     context.lineTo(e.clientX, e.clientY);
     context.strokeStyle = draw_color;
     context.lineWidth = draw_width;
@@ -184,13 +183,11 @@ line.addEventListener("click", () => {
 });
 
 function GetStartPoints() {
-  // This function sets start points
   x1 = event.clientX;
   y1 = event.clientY;
 }
 
 function GetEndPoints() {
-  // This function sets end points
   x2 = event.clientX;
   y2 = event.clientY;
 }
@@ -247,7 +244,7 @@ addTodo.addEventListener("click", () => {
   newTask.setAttribute("type", "text");
   newTask.setAttribute("placeholder", "Enter Task");
 
-  // push to container
+
   todoContainer.append(todoTitle);
   todoContainer.append(listedTask);
   todoContainer.append(newTask);
@@ -297,29 +294,25 @@ function dragElement(elmnt) {
   function dragMouseDown(e) {
     e = e || window.event;
     // e.preventDefault();
-    // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
+
     document.onmousemove = elementDrag;
   }
 
   function elementDrag(e) {
     e = e || window.event;
     // e.preventDefault();
-    // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
-    // set the element's new position:
     elmnt.style.top = elmnt.offsetTop - pos2 + "px";
     elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
   }
 
   function closeDragElement() {
-    // stop moving when mouse button is released:
     document.onmouseup = null;
     document.onmousemove = null;
   }
