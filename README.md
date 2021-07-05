@@ -1,6 +1,7 @@
 # Whitebord 🖊
 
 <h1 align="center">Introduction 👩🏻‍💻👨🏻‍💻 </h1>
+try here : https://undefined-whiteboard.netlify.app/
 
 
 <p align="center"> <strong>Whiteboard offers a delightful, modern mobile learning experience. Whiteboard is magic slate for everyone</strong></p>
@@ -10,7 +11,7 @@
 
 <h1 align="center">About 🧠 </h1>
 
-<p> App which allows users to type, draw, scribble, stack, create shapes, and much more – all on an infinite cloud-based workspace.</p>
+<p> App which allows users to type, draw, scribble, stack, create shapes, and much more – all on an infinite local storage-based workspace.</p>
 <br>
 <p></p>
 <br>
